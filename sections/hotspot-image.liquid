@@ -80,16 +80,11 @@
       <div class="hotspot__hotspots hotspot__hotspots--desktop">
         {% for block in section.blocks %}
           {% if block.type == 'desktop_hotspot' %}
-            <div
-              class="hotspot__item"
-              data-product-id="{{ block.settings.linked_product }}"
-              style="top: {{ block.settings.hotspot_y }}%; left: {{ block.settings.hotspot_x }}%;"
-              data-background-color="{{ block.settings.background_color }}"
-              data-border-color="{{ block.settings.border_color }}"
-              data-border-width="{{ block.settings.border_width }}px"
-            >
-              <span class="hotspot__icon"></span>
-            </div>
+            {% render 'hotspot-item',
+              linked_product: block.settings.linked_product,
+              hotspot_y: block.settings.hotspot_y,
+              hotspot_x: block.settings.hotspot_x
+            %}
           {% endif %}
         {% endfor %}
       </div>
@@ -97,16 +92,11 @@
       <div class="hotspot__hotspots hotspot__hotspots--mobile">
         {% for block in section.blocks %}
           {% if block.type == 'mobile_hotspot' %}
-            <div
-              class="hotspot__item"
-              data-product-id="{{ block.settings.linked_product }}"
-              style="top: {{ block.settings.hotspot_y }}%; left: {{ block.settings.hotspot_x }}%;"
-              data-background-color="{{ block.settings.background_color }}"
-              data-border-color="{{ block.settings.border_color }}"
-              data-border-width="{{ block.settings.border_width }}px"
-            >
-              <span class="hotspot__icon"></span>
-            </div>
+            {% render 'hotspot-item',
+              linked_product: block.settings.linked_product,
+              hotspot_y: block.settings.hotspot_y,
+              hotspot_x: block.settings.hotspot_x
+            %}
           {% endif %}
         {% endfor %}
       </div>
@@ -126,6 +116,7 @@
         height=""
         style="display: none;"
       >
+
       {% if section.settings.show_link %}
         <a
           id="hotspot-product-link"
