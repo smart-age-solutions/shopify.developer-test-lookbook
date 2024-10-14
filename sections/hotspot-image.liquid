@@ -8,6 +8,7 @@
 
   Customizations:
     - Desktop/Mobile image selection
+    - Loading strategy
     - Container width (max, full)
     - Position of product card (top, bottom, left, right)
     - Hotspot colors and hover colors (background, border, border-width)
@@ -65,6 +66,7 @@
             width="{{ section.settings.desktop_image.width }}"
             height="{{ section.settings.desktop_image.height }}"
             alt="{{ section.settings.desktop_image.alt }}"
+            loading="{{section.settings.loading_strategy }}"
           >
         {% elsif section.settings.mobile_image %}
           <img
@@ -72,6 +74,7 @@
             width="{{ section.settings.mobile_image.width }}"
             height="{{ section.settings.mobile_image.height }}"
             alt="{{ section.settings.mobile_image.alt }}"
+            loading="{{section.settings.loading_strategy }}"
           >
         {% endif %}
       </picture>
@@ -145,6 +148,23 @@
       "id": "mobile_image",
       "label": "Mobile Lookbook Image",
       "info": "Upload the main image for mobile view."
+    },
+    {
+      "type": "select",
+      "id": "loading_strategy",
+      "label": "Image loading priority",
+      "options": [
+        {
+          "value": "eager",
+          "label": "High priority"
+        },
+        {
+          "value": "lazy",
+          "label": "Normal priority"
+        }
+      ],
+      "default": "lazy",
+      "info": "Choose high priority if the image will appear on page load, otherwise it's best to set it to normal"
     },
     {
       "type": "checkbox",

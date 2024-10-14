@@ -86,6 +86,7 @@
       "settings": {
         "desktop_image": "shopify://shop_images/watches-desktop.webp",
         "mobile_image": "shopify://shop_images/watches-mobile.webp",
+        "loading_strategy": "eager",
         "is_full_width": false,
         "container_max_width": 1200,
         "vertical_alignment": "bottom",
