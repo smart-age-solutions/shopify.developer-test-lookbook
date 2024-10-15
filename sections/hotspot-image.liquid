@@ -1,0 +1,366 @@
+{% comment %}
+  Hotspot Image Section
+
+  Description:
+    This section allows administrators to add interactive hotspots
+    to images in the Lookbook. Each hotspot links to a specific product,
+    displaying the product image and details dynamically upon interaction.
+
+  Customizations:
+    - Desktop/Mobile image selection
+    - Loading strategy
+    - Container width (max, full)
+    - Position of product card (top, bottom, left, right)
+    - Hotspot colors and hover colors (background, border, border-width)
+    - Responsive design for desktop and mobile
+    - Dynamic loading of product information (image, title, link button)
+
+  Requirements:
+    - Shopify store with products linked to hotspots
+    - Images for desktop and mobile views
+
+  Usage:
+    1. Add the "Hotspot image" section to your Lookbook page.
+    2. Upload desktop and mobile images.
+    3. Add hotspots by specifying positions and linking them to products.
+    4. Customize hotspot appearance using the available settings.
+{% endcomment %}
+
+{{ 'hotspot-image.css' | asset_url | stylesheet_tag }}
+<script src="{{ "hotspot-image.js" | asset_url }}" defer></script>
+
+{% style %}
+  :root {
+    --container-max-width: {{ section.settings.container_max_width | divided_by: 10 }}rem;
+  }
+
+  .hotspot__item {
+    background-color: {{ section.settings.background_color }};
+    border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+  }
+
+  .hotspot__item:hover {
+    background-color: {{ section.settings.background_color_hover }};
+    border: {{ section.settings.border_width }}px solid {{ section.settings.border_color_hover }};
+  }
+
+  @media (min-width: 768px) {
+    .hotspot__product {
+      position: absolute;
+      {{ section.settings.vertical_alignment }}: 1.5rem;
+      {{ section.settings.horizontal_alignment }}: 1.5rem;
+    }
+  }
+{% endstyle %}
+
+<div class="{%  unless section.settings.is_full_width %} container-max-width {% endunless %}">
+  <div class="hotspot">
+    <div class="hotspot__container">
+      <picture class="hotspot__image">
+        <source media="(min-width: 768px)" srcset="{{ section.settings.desktop_image | image_url }}">
+        <source media="(max-width: 767px)" srcset="{{ section.settings.mobile_image | image_url }}">
+        {% if section.settings.desktop_image %}
+          <img
+            class="hotspot__image"
+            src="{{ section.settings.desktop_image | image_url }}"
+            width="{{ section.settings.desktop_image.width }}"
+            height="{{ section.settings.desktop_image.height }}"
+            alt="{{ section.settings.desktop_image.alt }}"
+            loading="{{section.settings.loading_strategy }}"
+          >
+        {% elsif section.settings.mobile_image %}
+          <img
+            src="{{ section.settings.mobile_image | image_url }}"
+            width="{{ section.settings.mobile_image.width }}"
+            height="{{ section.settings.mobile_image.height }}"
+            alt="{{ section.settings.mobile_image.alt }}"
+            loading="{{section.settings.loading_strategy }}"
+          >
+        {% endif %}
+      </picture>
+
+      <!-- Position the hotspot based on admin input -->
+      <div class="hotspot__hotspots hotspot__hotspots--desktop">
+        {% for block in section.blocks %}
+          {% if block.type == 'desktop_hotspot' %}
+            {% render 'hotspot-item',
+              linked_product: block.settings.linked_product,
+              hotspot_y: block.settings.hotspot_y,
+              hotspot_x: block.settings.hotspot_x
+            %}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="hotspot__hotspots hotspot__hotspots--mobile">
+        {% for block in section.blocks %}
+          {% if block.type == 'mobile_hotspot' %}
+            {% render 'hotspot-item',
+              linked_product: block.settings.linked_product,
+              hotspot_y: block.settings.hotspot_y,
+              hotspot_x: block.settings.hotspot_x
+            %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Product rendering -->
+    <div class="hotspot__product">
+      {% if section.settings.show_title %}
+        <h6 id="hotspot-product-title" class="hotspot__product-title"></h6>
+      {% endif %}
+
+      <img
+        id="hotspot-product-image"
+        class="hotspot__product-image"
+        alt="Product Image"
+        width=""
+        height=""
+        style="display: none;"
+      >
+
+      {% if section.settings.show_link %}
+        <a
+          id="hotspot-product-link"
+          class="hotspot__product-link"
+          style="display: none;"
+        >
+          {{ section.settings.link_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hotspot image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Lookbook Image",
+      "info": "Upload the main image for desktop view."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Lookbook Image",
+      "info": "Upload the main image for mobile view."
+    },
+    {
+      "type": "select",
+      "id": "loading_strategy",
+      "label": "Image loading priority",
+      "options": [
+        {
+          "value": "eager",
+          "label": "High priority"
+        },
+        {
+          "value": "lazy",
+          "label": "Normal priority"
+        }
+      ],
+      "default": "lazy",
+      "info": "Choose high priority if the image will appear on page load, otherwise it's best to set it to normal"
+    },
+    {
+      "type": "checkbox",
+      "id": "is_full_width",
+      "label": "Full width?",
+      "info": "Should the section be full width as opposed to a set max width?"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Section max width (px)",
+      "min": 400,
+      "max": 1600,
+      "step": 100,
+      "default": 1200,
+      "unit": "px",
+      "info": "Set the max width of the section if 'Full width?' is disabled"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "info": "(Desktop) Choose the vertical alignment of the product card displayed"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Horizontal alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "info": "(Desktop) Choose the horizontal alignment of the product card displayed"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show title?",
+      "default": true,
+      "info": "Toggle the display of the product title upon hotspot click."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_link",
+      "label": "Show link to product page?",
+      "default": true,
+      "info": "Toggle the display of the link to the product page."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link Label",
+      "default": "Discover model",
+      "info": "Text for the product page link."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Hotspot Background",
+      "default": "#FFFFFF",
+      "info": "Choose the background color of the hotspot."
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Hotspot Border",
+      "default": "#A37E2C",
+      "info": "Choose the background color of the hotspot."
+    },
+    {
+      "type": "color",
+      "id": "background_color_hover",
+      "label": "Hotspot Background: Hover",
+      "default": "#006039",
+      "info": "Choose the background color of the hotspot."
+    },
+    {
+      "type": "color",
+      "id": "border_color_hover",
+      "label": "Hotspot Border: Hover",
+      "default": "#A37E2C",
+      "info": "Choose the background color of the hotspot."
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Hotspot Border Width (px)",
+      "default": 2,
+      "min": 0,
+      "max": 4,
+      "unit": "px",
+      "info": "Set the border width of the hotspot."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "desktop_hotspot",
+      "name": "Desktop Hotspot",
+      "settings": [
+        {
+          "type": "text",
+          "id": "hotspot_label",
+          "label": "Label",
+          "default": "Hotspot",
+          "info": "Name or description for the hotspot."
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x",
+          "label": "X Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "info": "Horizontal position of the hotspot as a percentage."
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y",
+          "label": "Y Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "info": "Vertical position of the hotspot as a percentage."
+        },
+        {
+          "type": "product",
+          "id": "linked_product",
+          "label": "Linked Product",
+          "info": "Select the product to link to this hotspot."
+        }
+      ]
+    },
+    {
+      "type": "mobile_hotspot",
+      "name": "Mobile Hotspot",
+      "settings": [
+        {
+          "type": "text",
+          "id": "hotspot_label",
+          "label": "Label",
+          "default": "Hotspot",
+          "info": "Name or description for the hotspot."
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x",
+          "label": "X Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "info": "Horizontal position of the hotspot as a percentage."
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y",
+          "label": "Y Position (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50,
+          "info": "Vertical position of the hotspot as a percentage."
+        },
+        {
+          "type": "product",
+          "id": "linked_product",
+          "label": "Linked Product",
+          "info": "Select the product to link to this hotspot."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hotspot image"
+    }
+  ]
+}
+{% endschema %}

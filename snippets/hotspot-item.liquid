@@ -1,0 +1,18 @@
+{% comment %}
+  Renders hotspot's hotspot item (dot).
+  Accepts:
+  - linked_product: {Object} product object.
+  - hotspot_y: {Number} passing hotspot vertical position.
+  - hotspot_x: {Number} passing hotspot horizontal position.
+
+  Usage:
+  {% render 'hotspot-item', linked_product: product, hotspot_y: block.settings.hotspot_y, hotspot_x: block.settings.hotspot_x %}
+{% endcomment %}
+
+<div
+  class="hotspot__item"
+  data-product-id="{{ linked_product }}"
+  style="top: {{ hotspot_y }}%; left: {{ hotspot_x }}%;"
+>
+  <span class="hotspot__icon"></span>
+</div>

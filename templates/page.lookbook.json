@@ -1,0 +1,106 @@
+{
+  "sections": {
+    "rich_text_dQ7xA7": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TMPtT9": {
+          "type": "heading",
+          "settings": {
+            "heading": "Lookbook feature",
+            "heading_size": "h1"
+          }
+        },
+        "text_Kbr8Tp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This feature is kind of cool, not gonna lie...<br/>Please enjoy.</p>"
+          }
+        }
+      },
+      "block_order": ["heading_TMPtT9", "text_Kbr8Tp"],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "hostpot-image": {
+      "type": "hotspot-image",
+      "blocks": {
+        "desktop_hotspot_qUN8ft": {
+          "type": "desktop_hotspot",
+          "settings": {
+            "hotspot_label": "Hotspot",
+            "hotspot_x": 43,
+            "hotspot_y": 38,
+            "linked_product": "rolex-datejust-41"
+          }
+        },
+        "desktop_hotspot_wM7LVg": {
+          "type": "desktop_hotspot",
+          "settings": {
+            "hotspot_label": "Hotspot",
+            "hotspot_x": 62,
+            "hotspot_y": 86,
+            "linked_product": "rolex-datejust-41-copy"
+          }
+        },
+        "desktop_hotspot_iAewEj": {
+          "type": "desktop_hotspot",
+          "settings": {
+            "hotspot_label": "Hotspot",
+            "hotspot_x": 78,
+            "hotspot_y": 67,
+            "linked_product": "rolex-datejust-31"
+          }
+        },
+        "mobile_hotspot_rTKkXt": {
+          "type": "mobile_hotspot",
+          "settings": {
+            "hotspot_label": "Hotspot",
+            "hotspot_x": 72,
+            "hotspot_y": 65,
+            "linked_product": "rolex-datejust-41-copy"
+          }
+        },
+        "mobile_hotspot_GnfUdC": {
+          "type": "mobile_hotspot",
+          "settings": {
+            "hotspot_label": "Hotspot",
+            "hotspot_x": 55,
+            "hotspot_y": 42,
+            "linked_product": "rolex-datejust-31"
+          }
+        }
+      },
+      "block_order": [
+        "desktop_hotspot_qUN8ft",
+        "desktop_hotspot_wM7LVg",
+        "desktop_hotspot_iAewEj",
+        "mobile_hotspot_rTKkXt",
+        "mobile_hotspot_GnfUdC"
+      ],
+      "settings": {
+        "desktop_image": "shopify://shop_images/watches-desktop.webp",
+        "mobile_image": "shopify://shop_images/watches-mobile.webp",
+        "loading_strategy": "eager",
+        "is_full_width": false,
+        "container_max_width": 1200,
+        "vertical_alignment": "bottom",
+        "horizontal_alignment": "left",
+        "show_title": true,
+        "show_link": true,
+        "link_label": "Discover model",
+        "background_color": "#ffffff",
+        "border_color": "#a37e2c",
+        "background_color_hover": "#006039",
+        "border_color_hover": "#a37e2c",
+        "border_width": 2
+      }
+    }
+  },
+  "order": ["rich_text_dQ7xA7", "hostpot-image"]
+}
