@@ -83,7 +83,7 @@
         "container_max_width": 1200,
         "vertical_alignment": "bottom",
         "horizontal_alignment": "left",
-        "show_title": true,
+        "show_title": false,
         "show_link": true,
         "link_label": "Discover model",
         "background_color": "#ffffff",
